@@ -2,7 +2,7 @@
 
 本项目用于课程实验：基于 Atlas 200I DK A2 上的 Linux RTC 驱动文档，对 RTC 驱动做一个可验证的小修改，并提供开发板端测试应用。
 
-当前版本：`v1.5`
+当前版本：`v2.0`
 
 ## 实验目标
 
@@ -125,13 +125,14 @@ sudo bash scripts/load_module_on_board.sh /run/rtc-rv8803.ko
 sudo ./rtc_check
 ```
 
-v1.5 推荐验收命令：
+v2.0 推荐验收命令：
 
 ```bash
-sudo ./rtc_check --device /dev/rtc0 --compare --proc
+sudo ./rtc_check --device /dev/rtc0 --compare --max-drift 300 --samples 3 --interval 1 --proc
+sudo ./rtc_check --device /dev/rtc0 --compare --max-drift 300 --samples 3 --interval 1 --json | tee rtc_evidence_v2.jsonl
 ```
 
-其中 `--device` 用于指定 RTC 设备节点，`--compare` 用于对比 RTC 时间和系统时间，`--proc` 用于读取 `/proc/driver/rtc` 摘要，`--version` 用于输出项目版本。
+其中 `--device` 用于指定 RTC 设备节点，`--compare` 用于对比 RTC 时间和系统时间，`--max-drift` 用于设置允许误差阈值，`--samples` 和 `--interval` 用于连续采样，`--json` 用于生成可保存、可比较的验收证据，`--proc` 用于读取 `/proc/driver/rtc` 摘要，`--version` 用于输出项目版本。
 
 ## 验收命令
 
@@ -140,7 +141,8 @@ ls -l /dev/rtc*
 lsmod | grep -E 'rtc|rv8803'
 dmesg | grep atlas-rtc-demo
 ./rtc_check
-./rtc_check --device /dev/rtc0 --compare --proc
+./rtc_check --device /dev/rtc0 --compare --max-drift 300 --samples 3 --interval 1 --proc
+./rtc_check --device /dev/rtc0 --compare --max-drift 300 --samples 3 --interval 1 --json
 cat /proc/driver/rtc
 hwclock -r -f /dev/rtc0
 ```

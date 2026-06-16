@@ -10,7 +10,10 @@ echo "[2/5] list RTC devices"
 ls -l /dev/rtc* 2>/dev/null || true
 
 echo "[3/5] read RTC by user app"
-./rtc_check --device "$RTC_DEV" --compare --proc
+./rtc_check --device "$RTC_DEV" --compare --max-drift 300 --samples 3 --interval 1 --proc
+
+echo "[3b/5] collect JSON evidence"
+./rtc_check --device "$RTC_DEV" --compare --max-drift 300 --samples 3 --interval 1 --json
 
 echo "[4/5] read RTC by system tool if available"
 if command -v hwclock >/dev/null 2>&1; then

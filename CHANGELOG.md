@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.0 - RTC acceptance evidence upgrade
+
+- Add repeated RTC sampling with `--samples` and `--interval`.
+- Add drift threshold checking with `--max-drift`, returning a non-zero status when validation fails.
+- Add JSON output with `--json` so board-side evidence can be saved by Git collaborators and compared across runs.
+- Update board acceptance script to collect both human-readable logs and machine-readable evidence.
+- Bump project version to `v2.0`.
+
 ## v1.5 - RTC system evidence version
 
 - Add project version header `include/project_version.h`.
