@@ -7,4 +7,5 @@ rtc_check
 Module.symvers
 modules.order
 .tmp_versions/
-
+__pycache__/
+*.pyc

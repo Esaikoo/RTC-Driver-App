@@ -2,6 +2,8 @@
 
 本项目用于课程实验：基于 Atlas 200I DK A2 上的 Linux RTC 驱动文档，对 RTC 驱动做一个可验证的小修改，并提供开发板端测试应用。
 
+当前版本：`v1.5`
+
 ## 实验目标
 
 - 修改 Atlas 200I DK A2 使用的 RTC 驱动 `rtc-rv8803.c`。
@@ -49,7 +51,10 @@ ioctl(fd, RTC_RD_TIME, ...)
 ```text
 atlas-rtc-driver-demo/
 ├── README.md
+├── CHANGELOG.md
 ├── Makefile
+├── include/
+│   └── project_version.h
 ├── src/
 │   └── rtc_check.c
 ├── scripts/
@@ -120,6 +125,14 @@ sudo bash scripts/load_module_on_board.sh /run/rtc-rv8803.ko
 sudo ./rtc_check
 ```
 
+v1.5 推荐验收命令：
+
+```bash
+sudo ./rtc_check --device /dev/rtc0 --compare --proc
+```
+
+其中 `--device` 用于指定 RTC 设备节点，`--compare` 用于对比 RTC 时间和系统时间，`--proc` 用于读取 `/proc/driver/rtc` 摘要，`--version` 用于输出项目版本。
+
 ## 验收命令
 
 ```bash
@@ -127,6 +140,7 @@ ls -l /dev/rtc*
 lsmod | grep -E 'rtc|rv8803'
 dmesg | grep atlas-rtc-demo
 ./rtc_check
+./rtc_check --device /dev/rtc0 --compare --proc
 cat /proc/driver/rtc
 hwclock -r -f /dev/rtc0
 ```
@@ -147,9 +161,6 @@ RTC time: 2026-06-10 15:20:30
 [atlas-rtc-demo] read_time called
 ```
 
-## 和 myhello.ko 的区别
+## 实验链路说明
 
-`myhello.ko` 是 dummy driver，只验证新增内核模块的编译、加载、卸载流程；它不访问硬件。
-
-本项目修改的是实际 RTC 驱动路径。用户程序读取 `/dev/rtc0` 时，会通过 Linux RTC 子系统进入具体 RTC 驱动，因此能体现“驱动修改 + 用户态验证”的完整链路。
-
+本项目面向 Atlas 200I DK A2 的 RTC 驱动路径。用户程序读取 `/dev/rtc0` 时，会通过 Linux RTC 子系统进入具体 RTC 驱动 `rtc-rv8803.c`，再由驱动通过 I2C 框架访问 RTC 芯片。项目中的驱动日志、用户态验证程序和开发板运行脚本共同用于观察这一链路是否被实际触发。

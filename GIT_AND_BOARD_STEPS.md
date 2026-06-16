@@ -127,6 +127,13 @@ sudo bash scripts/load_module_on_board.sh /run/rtc-rv8803.ko
 sudo bash scripts/run_on_board.sh /dev/rtc0
 ```
 
+也可以直接运行 v1.5 用户态验证工具：
+
+```bash
+make
+sudo ./rtc_check --device /dev/rtc0 --compare --proc
+```
+
 ## 5. 验收截图建议
 
 建议截图保留这些命令结果：
@@ -136,6 +143,7 @@ git log --oneline -3
 ls -l /dev/rtc*
 lsmod | grep -E 'rtc|rv8803'
 ./rtc_check /dev/rtc0
+./rtc_check --device /dev/rtc0 --compare --proc
 dmesg | grep atlas-rtc-demo
 cat /proc/driver/rtc
 ```
@@ -145,4 +153,3 @@ cat /proc/driver/rtc
 可以这样讲：
 
 > 我使用 Git 管理 Atlas RTC 驱动修改项目。仓库中包含驱动补丁脚本、开发板端测试应用和实验说明。驱动修改点位于 Linux RTC 芯片驱动 `drivers/rtc/rtc-rv8803.c`，增加了带有 `[atlas-rtc-demo]` 标记的日志。开发板运行用户态程序读取 `/dev/rtc0` 后，会通过 RTC 子系统调用驱动的 `read_time`，此时 `dmesg` 中可以看到新增日志，说明修改后的 RTC 驱动路径已经被实际触发。
-
