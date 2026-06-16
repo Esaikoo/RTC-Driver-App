@@ -1,0 +1,10 @@
+This file records expected validation phenomena, not real hardware output.
+
+Expected observations:
+
+1. dmesg contains LED driver registration information.
+2. /sys/class/leds contains the target LED node.
+3. brightness can be read and written.
+4. Writing 1 turns the LED on and writing 0 turns it off.
+5. trigger supports timer or other modes.
+6. After trigger=timer, the LED blinks periodically.
