@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LED 控制面板</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="panel">
+      <header>
+        <p>Atlas LED</p>
+        <h1>LED 控制面板</h1>
+      </header>
+
+      <section class="state-card" aria-label="LED current state">
+        <span>当前状态</span>
+        <strong id="stateText">连接中</strong>
+      </section>
+
+      <section class="controls" aria-label="LED controls">
+        <button class="control control-on" data-action="on" type="button">点亮</button>
+        <button class="control control-off" data-action="off" type="button">熄灭</button>
+        <button class="control control-blink" data-action="blink" type="button">闪烁</button>
+        <button class="control control-stop" data-action="stop" type="button">停止闪烁</button>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
